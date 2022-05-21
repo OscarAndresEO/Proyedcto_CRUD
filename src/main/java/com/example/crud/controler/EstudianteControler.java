@@ -18,8 +18,6 @@ import java.util.Optional;
 @Controller
 @RequestMapping
 public class EstudianteControler {
-	int id = -1;
-
 	@Autowired
 	private IEstudianteService service;
 	
