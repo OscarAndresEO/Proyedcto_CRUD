@@ -9,19 +9,15 @@
 <body>
 <div class="container mt-6">
     <div class="col-sm-6">
-        <form id="form" th:action="@{/Guardar}" th:object="${estudiante}" method="POST">
+        <form id="form1" th:action="@{/Guardar}" th:object="${estudiante}" method="POST">
 
             <div class="card">
                 <div class="card-header">
                     <h3>CREAR ESTUDIANTE</h3>
                 </div>
                 <div class="card-body">
-                   <!--
-                   <div class="form-control">
-                        <label>ID</label> <input type="text" th:field="*{id}" readonly="readonly"/>
-                    </div>
-                    -->
-                    <div class="form-control" >
+
+                    <div class="form-control" hidden="true">
                         <label>ID</label> <input class="form-control" type="text" th:field="*{id}"/>
                     </div>
                     <div class="form-control">
@@ -33,11 +29,52 @@
                     <div class="form-control">
                         <label>CORREO</label> <input class="form-control" type="text" th:field="*{email}"/><span id="emailOK"></span>
                     </div>
+
+                    <script>
+                        document.getElementById('correo').addEventListener('input', function () {
+                            campo = event.target;
+                            valido = document.getElementById('emailOK');
+
+                            emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+                            //Se muestra un texto a modo de ejemplo, luego va a ser un icono
+                            if (emailRegex.test(campo.value)) {
+                                valido.innerText = "Correo Valido";
+                            } else {
+                                valido.innerText = "Verifique que la dirección de correo electrónico ingresada sea correcta";
+                            }
+                        });
+                    </script>
+
                     <div class="form-control">
                         <label>TELEFONO</label> <input class="form-control" maxlength="8" minlength="8" id="telefono" type="text" th:field="*{telefono}"/><span id="telOK"></span>
                     </div>
 
+                    <script>
+                        const form = document.getElementsByTagName('form1')[0];
+                        const telefono = document.getElementById('telOK');
 
+                        telefono.addEventListener('keydown', function (e) {
+                            var code = e.which || e.keyCode,
+                                allowedKeys = [8, 9, 13, 27, 35, 36, 37, 38, 39, 46, 110, 190];
+
+                            if (allowedKeys.indexOf(code) > -1) {
+                                return;
+                            }
+
+                            if ((e.shiftKey || (code < 48 || code > 57)) && (code < 96 || code > 105)) {
+                                e.preventDefault();
+                            }
+                            telefono.setCustomValidity('');
+                            telefono.checkValidity();
+                        });
+                    </script>
+
+                    <div class="form-control" hidden="true">
+                        <label>ID</label> <input class="form-control" type="text" th:field="*{id}"/>
+                    </div>
+                    <div class="form-control" >
+                        <label>Estado</label> <input class="form-control" placeholder="Activo" type="text" th:field="*{estado}"/>
+                    </div>
 
                         <input type="submit" value="Guardar" class="btn btn-success">
                         <a th:href="@{/listar}" class="btn btn-primary">Regresar</a>

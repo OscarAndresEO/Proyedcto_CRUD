@@ -1,5 +1,6 @@
 package com.example.crud.controler;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.validation.annotation.Validated;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,10 @@ import java.util.Optional;
 @Controller
 @RequestMapping
 public class EstudianteControler {
-	int id = -1;
-
 	@Autowired
 	private IEstudianteService service;
-	
+
+	@Query("SELECT * from  estudiante where estado =! 'Eliminado';")
 	@GetMapping("/listar")
 	public String listar(Model model) {
 		model.addAttribute ("estudiantes", service.listar());
