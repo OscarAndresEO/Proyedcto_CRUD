@@ -31,6 +31,10 @@ public class Estudiante {
 			columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Calendar fecha_creacion;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "fecha_modificacion", updatable = false, nullable = true, insertable = false,
+			columnDefinition="TIMESTAMP ")
+	private Calendar fecha_modificacion;
 
 
 	public int getId() {
