@@ -6,10 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.crud.modelo.Estudiante;
 import com.example.crud.interfaceServices.IEstudianteService;
@@ -22,7 +19,7 @@ public class EstudianteControler {
 	@Autowired
 	private IEstudianteService service;
 
-	@Query("SELECT * from  estudiante where estado =! 'Eliminado';")
+
 	@GetMapping("/listar")
 	public String listar(Model model) {
 		model.addAttribute ("estudiantes", service.listar());
@@ -44,17 +41,23 @@ public class EstudianteControler {
 		}
 		return "redirect:/listar";
 	}
-
+	public int id;
 	@GetMapping("/editar/{id}")
 	public String editar(@PathVariable int id, Model model) {
 		Optional<Estudiante> estudiante = service.listarId(id);
+		this.id = id;
 		model.addAttribute("estudiante",estudiante);
-		return "form";
+		return "form2";
 	}
 
+	@PostMapping("/editar")
+	public String editado(@ModelAttribute Estudiante estudiante){
+		service.update(estudiante.getNombre(), estudiante.getTelefono(),estudiante.getEmail(), this.id);
+		return "redirect:/listar";
+	}
 
-	@GetMapping("/delete/{id}")
-	public String eliminar(@PathVariable int id,Model model) {
+	@GetMapping("/eliminar/{id}")
+	public String eliminar(@PathVariable int id) {
 		service.delete(id);
 		return "redirect:/listar";
 	}
